@@ -28,20 +28,30 @@ def print_table(table):
             headers=['Fhook','Word','Bhook','Definition'],
             tablefmt="simple"
             )
+        print len(table)
     else:
         print "No data matching that search"
 
 
-def search_results(data, search_type):
-    if search_type == "annagram":
-        alpha = ''.join(sorted(data))
-        rows = connect("SELECT front_hooks,word,back_hooks,definition FROM words WHERE alphagram = '%s'" % alpha )
+def search_results(**kwargs):
+    if kwargs["search_type"] == "annagram":
+        alpha = ''.join(sorted(kwargs["srch_trm"])).upper()
+        rows = connect("SELECT front_hooks,word,back_hooks,definition FROM words WHERE length = 7 AND alphagram LIKE '%s'" % '%A%E%I%R%S%T%')
         words = make_table(rows)  
-    elif search_type == "pattern":
-        rows = connect("SELECT front_hooks,word,back_hooks,definition FROM words WHERE word = '%s'" % data )
+    elif kwargs["search_type"] == "pattern":
+        data = format_data(**kwargs)
+        rows = connect("SELECT front_hooks,word,back_hooks,definition FROM words WHERE word LIKE '%s'" % data )
         words = make_table(rows)  
     return words                   
-    
+   
+def format_data(**kwargs):
+    if kwargs["search_type"] == "pattern":
+        srch_trm = kwargs["srch_trm"]
+        if '?' in srch_trm:
+            return srch_trm.replace('?','_')
+        else:
+            return srch_trm
+            
 def make_table(data):
     words = []
     for row in data:

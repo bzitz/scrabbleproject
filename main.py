@@ -29,7 +29,8 @@ def query(param):
     os.system('clear')
     print "Enter %s you would like to search" % param
     word = raw_input()
-    lookup.find(word, param) 
+    kwargs = {"srch_trm" : word,"search_type" : param}
+    lookup.print_table(lookup.search_results(**kwargs)) 
     print "\n"
     data = raw_input("Press Enter to continue or :help to see other commands...  ")
     if data == "":
