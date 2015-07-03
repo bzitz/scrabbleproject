@@ -1,6 +1,40 @@
+import os, lookup, sys
+
+def choice_handler(choice):
+    if choice == ":s":
+        search()
+    elif choice == ":sa":
+        query("annagram")
+    elif choice == ":sp":
+        query("pattern")
+
+    elif choice == ":quit":
+        print "Goodbye"
+        sys.exit
+
 def main():
-    print "Enter 1 for annagram lookup"
+    os.system('clear')
+    data = raw_input("Enter Choice... ")
+    choice_handler(data)
+
+
+def search():
+    os.system('clear')
+    print "Enter :sa for Annagram lookup"
+    print "Enter :sp for Pattern match"
     data = raw_input()
-    if data == "1":
-        print "you entered 1"
+    choice_handler(data)
+
+def query(param):
+    os.system('clear')
+    print "Enter %s you would like to search" % param
+    word = raw_input()
+    lookup.find(word, param) 
+    print "\n"
+    data = raw_input("Press Enter to continue or :help to see other commands...  ")
+    if data == "":
+        query(param)
+    else:
+        choice_handler(data)
+
 main()
