@@ -43,7 +43,7 @@ def add_backhook():
         print command
 
 def add_fronthook():
-    words = get_words(connect("SELECT word from words"))
+    words = get_words(connect("SELECT word from words WHERE length <= 9"))
     for word in words:
         hooks = []
         for ltr in alphabet():
