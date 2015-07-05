@@ -13,6 +13,9 @@ def choice_handler(choice):
     elif choice == ":quit":
         print "Goodbye"
         sys.exit
+    else:
+        data = raw_input("No command found choose again...  ")
+        choice_handler(data)
 
 def main():
     os.system('clear')

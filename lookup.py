@@ -37,18 +37,18 @@ def search_results(**kwargs):
         alpha = ''.join(sorted(kwargs["srch_trm"])).upper()
         kwargs = {"search_type" : "annagram","srch_trm" : alpha}
         data = format_data(**kwargs)
-        rows = connect("SELECT front_hooks,word,back_hooks,definition FROM words WHERE length = %d AND alphagram LIKE '%s'" % (data[1], data[0]))
+        rows = connect("SELECT front_hooks,word,back_hooks,definition,lexicon_symbol FROM words WHERE length = %d AND alphagram LIKE '%s'" % (data[1], data[0]))
         words = make_table(rows)  
     elif kwargs["search_type"] == "pattern":
         data = format_data(**kwargs)
-        rows = connect("SELECT front_hooks,word,back_hooks,definition FROM words WHERE word LIKE '%s'" % data )
+        rows = connect("SELECT front_hooks,word,back_hooks,definition,lexicon_symbol FROM words WHERE word LIKE '%s'" % data )
         words = make_table(rows)  
     elif kwargs["search_type"] == "new":
         number = kwargs["length"]
         if int(number) == 0:
-            rows = connect("SELECT front_hooks,word,back_hooks,definition FROM words WHERE lexicon_symbol = '$'")
+            rows = connect("SELECT front_hooks,word,back_hooks,definition,lexicon_symbol FROM words WHERE lexicon_symbol = '$'")
         else:
-            rows = connect("SELECT front_hooks,word,back_hooks,definition FROM words WHERE lexicon_symbol = '$' AND length = %d" % int(number))
+            rows = connect("SELECT front_hooks,word,back_hooks,definition,lexicon_symbol FROM words WHERE lexicon_symbol = '$' AND length = %d" % int(number))
             
         words = make_table(rows)  
     return words                   
@@ -74,7 +74,7 @@ def make_table(data):
     words = []
     for row in data:
         fh = xstr(row[0])
-        wrd = xstr(row[1])
+        wrd = xstr(row[1]) + ' ' + xstr(row[4])
         bh = xstr(row[2])
         defin = xstr(row[3])
         lst = [fh,wrd,bh,defin]
