@@ -43,6 +43,14 @@ def search_results(**kwargs):
         data = format_data(**kwargs)
         rows = connect("SELECT front_hooks,word,back_hooks,definition FROM words WHERE word LIKE '%s'" % data )
         words = make_table(rows)  
+    elif kwargs["search_type"] == "new":
+        number = kwargs["length"]
+        if int(number) == 0:
+            rows = connect("SELECT front_hooks,word,back_hooks,definition FROM words WHERE lexicon_symbol = '$'")
+        else:
+            rows = connect("SELECT front_hooks,word,back_hooks,definition FROM words WHERE lexicon_symbol = '$' AND length = %d" % int(number))
+            
+        words = make_table(rows)  
     return words                   
    
 def format_data(**kwargs):
@@ -72,9 +80,6 @@ def make_table(data):
         lst = [fh,wrd,bh,defin]
         words.append(lst)
     return words   
-
-def find(wrd, param):
-    print_table(search_results(wrd.upper(), param))
 
 def main(_, word):
     alpha = ''.join(sorted(word))
