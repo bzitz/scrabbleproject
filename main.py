@@ -17,7 +17,6 @@ def main():
     data = raw_input("Enter Choice... ")
     choice_handler(data)
 
-
 def search():
     os.system('clear')
     print "Enter :sa for Annagram lookup"

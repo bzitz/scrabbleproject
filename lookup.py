@@ -32,11 +32,12 @@ def print_table(table):
     else:
         print "No data matching that search"
 
-
 def search_results(**kwargs):
     if kwargs["search_type"] == "annagram":
         alpha = ''.join(sorted(kwargs["srch_trm"])).upper()
-        rows = connect("SELECT front_hooks,word,back_hooks,definition FROM words WHERE length = 7 AND alphagram LIKE '%s'" % '%A%E%I%R%S%T%')
+        kwargs = {"search_type" : "annagram","srch_trm" : alpha}
+        data = format_data(**kwargs)
+        rows = connect("SELECT front_hooks,word,back_hooks,definition FROM words WHERE length = %d AND alphagram LIKE '%s'" % (data[1], data[0]))
         words = make_table(rows)  
     elif kwargs["search_type"] == "pattern":
         data = format_data(**kwargs)
@@ -46,12 +47,21 @@ def search_results(**kwargs):
    
 def format_data(**kwargs):
     if kwargs["search_type"] == "pattern":
-        srch_trm = kwargs["srch_trm"]
+        srch_trm = kwargs["srch_trm"].upper()
         if '?' in srch_trm:
             return srch_trm.replace('?','_')
         else:
             return srch_trm
-            
+    elif kwargs["search_type"] == "annagram":
+        srch_trm = kwargs["srch_trm"].upper()
+        if '?' in srch_trm:
+            new = srch_trm.translate(None,'?')
+            frmt = "%" + '%'.join(new) + "%"
+            print frmt, len(srch_trm)
+            return frmt, len(srch_trm)
+        else:
+            return srch_trm, len(srch_trm)
+
 def make_table(data):
     words = []
     for row in data:
