@@ -1,29 +1,45 @@
-import os, sys
+import os, sys, lookup
 
-kwargs = {"questions" : ['EHLLO', 'ABS']}
-def quiz_main(**kwargs):
-    for x in range(len(kwargs["questions"])):
-        # os.system("clear")
-        print kwargs["questions"][x]
-        print "\n"
-        cnt = 1
-        answers = []
-        data = raw_input("%d." % cnt)
-        while data != '':
-            answers.append(data)
-            cnt = cnt + 1
-            data = raw_input("%d." % cnt)
-            if data == '':
-                if kwargs['questions'][x] == "EHLLO":
-                    answer_key = ['HELLO']
-                elif kwargs['questions'][x] == "ABS":
-                    answer_key = ['ABS','SAB','BAS']
-                if sorted(answers) == sorted(answer_key):
-                    print "CORRECT"
-                elif answers != answer_key:
-                    print "INCORRECT"
+questions = ["EHLLO","AEINSTR"]
+
+def quiz_main(question):
+    os.system("clear")
+    print question
+    print "\n"
+    cnt = 1
+    answers = []
+    data = raw_input("%d." % cnt).upper()
+    while data != '':
+        answers.append(data)
+        cnt = cnt + 1
+        data = raw_input("%d." % cnt).upper()
+        if data == '':
+            print "\n"
+            results(check(question,answers),question)
                 
-                print sorted(answers)
+def check(question,answers):
+    rows = lookup.connect("SELECT word FROM words WHERE alphagram = '%s'" % question)
+    correct_answers = []
+    for row in rows:
+        wrd = lookup.xstr(row[0])
+        correct_answers.append(wrd)
+    if sorted(answers) == sorted(correct_answers):
+        return "correct"
+    elif sorted(answers) != sorted(correct_answers):
+        return "incorrect"
 
-quiz_main(**kwargs)
+def results(result, question):
+    if result == 'correct':
+        print "CORRECT"
+        lookup.print_table(lookup.search_results(**{"search_type" : "annagram", "srch_trm": question}))
+    elif result == 'incorrect':
+        print "INCORRECT"
+        lookup.print_table(lookup.search_results(**{"search_type" : "annagram", "srch_trm": question}))
 
+def test(question):
+    for x in question:
+        quiz_main(x)
+        print "\n"
+        choice = raw_input("Press Enter to continue or enter a command... ")
+
+test(questions)
