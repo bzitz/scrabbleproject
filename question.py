@@ -1,7 +1,5 @@
 import os, sys, lookup
 
-questions = ["EHLLO","AEINSTR"]
-
 def quiz_main(question):
     os.system("clear")
     print question
@@ -18,11 +16,8 @@ def quiz_main(question):
             results(check(question,answers),question)
                 
 def check(question,answers):
-    rows = lookup.connect("SELECT word FROM words WHERE alphagram = '%s'" % question)
-    correct_answers = []
-    for row in rows:
-        wrd = lookup.xstr(row[0])
-        correct_answers.append(wrd)
+    kwargs = {"alphagram":question, "search_type":"check"}
+    correct_answers = lookup.build_list(**kwargs)
     if sorted(answers) == sorted(correct_answers):
         return "correct"
     elif sorted(answers) != sorted(correct_answers):
@@ -42,4 +37,3 @@ def test(question):
         print "\n"
         choice = raw_input("Press Enter to continue or enter a command... ")
 
-test(questions)
