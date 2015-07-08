@@ -35,14 +35,14 @@ def query(param):
         print "Enter %s you would like to search" % param
         word = raw_input()
         kwargs = {"srch_trm" : word,"search_type" : param }
-        lookup.print_table(lookup.search_results(**kwargs)) 
+        lookup.search_initiate(**kwargs) 
         wrd_lst = lookup.build_list(**kwargs)
         print "\n"
     if param == "new":
         print "Enter Length or 0 for all new words"
         srch = raw_input()
         kwargs = {"length" : srch, "search_type" : param}
-        lookup.print_table(lookup.search_results(**kwargs))
+        lookup.search_initiate(**kwargs)
         wrd_lst = lookup.build_list(**kwargs)
         print "\n"
     data = raw_input("Press Enter to continue or :help to see other commands...  ")

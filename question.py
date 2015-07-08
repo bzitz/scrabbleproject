@@ -26,10 +26,10 @@ def check(question,answers):
 def results(result, question):
     if result == 'correct':
         print "CORRECT"
-        lookup.print_table(lookup.search_results(**{"search_type" : "annagram", "srch_trm": question}))
+        lookup.search_initiate(**{"search_type" : "annagram", "srch_trm": question})
     elif result == 'incorrect':
         print "INCORRECT"
-        lookup.print_table(lookup.search_results(**{"search_type" : "annagram", "srch_trm": question}))
+        lookup.search_initiate(**{"search_type" : "annagram", "srch_trm": question})
 
 def test(question):
     for x in question:

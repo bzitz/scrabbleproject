@@ -32,24 +32,41 @@ def print_table(table):
     else:
         print "No data matching that search"
 
-def search_results(**kwargs):
+def search_initiate(**kwargs):
     if kwargs["search_type"] == "annagram":
-        alpha = ''.join(sorted(kwargs["srch_trm"])).upper()
-        kwargs = {"search_type" : "annagram","srch_trm" : alpha}
-        data = format_data(**kwargs)
-        rows = connect("SELECT front_hooks,word,back_hooks,definition,lexicon_symbol FROM words WHERE length = %d AND alphagram LIKE '%s'" % (data[1], data[0]))
-        words = make_table(rows)  
-    elif kwargs["search_type"] == "pattern":
-        data = format_data(**kwargs)
-        rows = connect("SELECT front_hooks,word,back_hooks,definition,lexicon_symbol FROM words WHERE word LIKE '%s'" % data[0] )
-        words = make_table(rows)  
-    elif kwargs["search_type"] == "new":
-        number = kwargs["length"]
-        if int(number) == 0:
-            rows = connect("SELECT front_hooks,word,back_hooks,definition,lexicon_symbol FROM words WHERE lexicon_symbol = '$'")
-        else:
-            rows = connect("SELECT front_hooks,word,back_hooks,definition,lexicon_symbol FROM words WHERE lexicon_symbol = '$' AND length = %d" % int(number))
-            
+        srch_trm = kwargs["srch_trm"]
+        print_table(annagram_search(srch_trm))
+    if kwargs["search_type"] == "pattern":
+        srch_trm = kwargs["srch_trm"]
+        print_table(annagram_search(srch_trm))
+    if kwargs["search_type"] == "new":
+        length = kwargs["length"]
+        print_table(newword_search(length))
+
+def annagram_search(srch_trm):
+    if '?' in srch_trm: 
+        new = srch_trm.translate(None, '?')
+        frmt = '%' + '%'.join(sorted(new)).upper() + '%'
+    else: 
+        frmt = ''.join(sorted(srch_trm)).upper()
+    rows = connect("SELECT front_hooks,word,back_hooks,definition,lexicon_symbol,alphagram FROM words WHERE length = %d AND alphagram LIKE '%s'" % (len(srch_trm), frmt))
+    words = make_table(rows)  
+    return words
+def pattern_search(srch_trm):
+    if '?' in srch_trm:
+        data = srch_trm.replace('?','_').upper()
+    else:  
+        data = srch_trm.upper()
+    rows = connect("SELECT front_hooks,word,back_hooks,definition,lexicon_symbol FROM words WHERE word LIKE '%s'" % data )
+    words = make_table(rows)  
+    return words
+
+def newword_search(length):
+    if int(length) == 0:
+        rows = connect("SELECT front_hooks,word,back_hooks,definition,lexicon_symbol FROM words WHERE lexicon_symbol = '$'")
+    else:
+        rows = connect("SELECT front_hooks,word,back_hooks,definition,lexicon_symbol FROM words WHERE lexicon_symbol = '$' AND length = %d" % int(length))
+        
         words = make_table(rows)  
     return words                   
    
@@ -65,7 +82,6 @@ def format_data(**kwargs):
         if '?' in srch_trm:
             new = srch_trm.translate(None,'?')
             frmt = "%" + '%'.join(new) + "%"
-            print frmt, len(srch_trm)
             return frmt, len(srch_trm)
         else:
             return srch_trm, len(srch_trm)
