@@ -34,4 +34,20 @@ def get_combo():
         print x,final[x]
         command = "INSERT INTO four_letter_leaves (leave,sevens) VALUES ('%s',%d)" % (x,final[x]) 
         update_db(command)
-get_combo()
+
+def get_bingos():
+    searches = ['????AERS','????EORS','????AGIN','????AINR','????ACIR','ILTU????','DNOU????']
+    alphagrams = []
+    for wrd in searches:
+        kwargs = {'search_type' : 'annagram','srch_trm' : wrd }
+        words = lookup.build_list(**kwargs)
+        for each in words:
+            if each not in alphagrams:
+                alphagrams.append(each)
+    print len(alphagrams)
+    for alpha in alphagrams:
+        command = "INSERT INTO study_list (question,length) VALUES ('%s',%d)" % (alpha,len(alpha))
+        print alpha
+        update_db(command)
+
+         
