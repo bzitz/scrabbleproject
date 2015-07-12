@@ -7,6 +7,10 @@ def quiz_main(question):
     cnt = 1
     answers = []
     data = raw_input("%d." % cnt).upper()
+    if data == '':
+        print "\n"
+        results(check(question,answers),question)
+        
     while data != '':
         answers.append(data)
         cnt = cnt + 1
