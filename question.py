@@ -1,7 +1,6 @@
 import os, sys, lookup, leave_calc, calendar, time
 
 def quiz_main(question):
-    os.system("clear")
     print question
     print "\n"
     cnt = 1

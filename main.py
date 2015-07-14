@@ -54,9 +54,13 @@ def query(param):
         choice_handler(data)
 
 def quiz(questions):
+    count = 1
     for item in questions:
+        os.system("clear")
+        print "Question %d of %d" % (count, len(questions))
         question.quiz_main(item)
         print "\n"
+        count =  count + 1
         choice = raw_input("Press Enter to continues or enter a command... ")
         if choice == '':
             continue
