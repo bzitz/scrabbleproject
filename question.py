@@ -8,8 +8,7 @@ def quiz_main(question):
     data = raw_input("%d." % cnt).upper()
     if data == '':
         print "\n"
-        results(check(question,answers),question)
-        
+        results(check(question,answers),question) 
     while data != '':
         answers.append(data)
         cnt = cnt + 1
@@ -52,5 +51,10 @@ def update_db(**kwargs):
         leave_calc.update_db(command1)
         leave_calc.update_db(command2)
 
+def question_stats(question):
+    query1 = lookup.connect("SELECT * FROM study_list WHERE question = '%s'" % question)
+    query2 = lookup.connect("SELECT * FROM words WHERE alphagram = '%s'" % question)
+    print query1, query2
 
-  
+question_stats('AEINRST')
+
