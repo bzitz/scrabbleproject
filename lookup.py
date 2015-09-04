@@ -38,7 +38,7 @@ def search_initiate(**kwargs):
         print_table(annagram_search(srch_trm))
     if kwargs["search_type"] == "pattern":
         srch_trm = kwargs["srch_trm"]
-        print_table(annagram_search(srch_trm))
+        print_table(pattern_search(srch_trm))
     if kwargs["search_type"] == "new":
         length = kwargs["length"]
         print_table(newword_search(length))

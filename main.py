@@ -9,6 +9,8 @@ def choice_handler(choice):
         query("pattern")
     elif choice == ":sn":
         query("new")
+    elif choice ==":judge":
+        query("judge")
 
     elif choice == ":quit":
         print "Goodbye"
@@ -54,17 +56,6 @@ def query(param):
         choice_handler(data)
 
 def quiz(questions):
-    count = 1
-    for item in questions:
-        os.system("clear")
-        print "Question %d of %d" % (count, len(questions))
-        question.quiz_main(item)
-        print "\n"
-        count =  count + 1
-        choice = raw_input("Press Enter to continues or enter a command... ")
-        if choice == '':
-            continue
-        else:
-            choice_handler(choice)
+    question.quiz_main(questions)
 
 main()

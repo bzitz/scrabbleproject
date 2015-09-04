@@ -1,21 +1,52 @@
 import os, sys, lookup, leave_calc, calendar, time
 
 def quiz_main(question):
-    print question
-    print "\n"
-    cnt = 1
-    answers = []
-    data = raw_input("%d." % cnt).upper()
-    if data == '':
+    count = 1
+    correct = 0
+    wrong = 0
+    questions_correct = []
+    questions_wrong = []
+    for item in question:
+        os.system("clear")
+        print "Questions %d of %d" % (count, len(question)) 
+        print "%d of %d Correct" % (correct, correct+wrong)
         print "\n"
-        results(check(question,answers),question) 
-    while data != '':
-        answers.append(data)
-        cnt = cnt + 1
+        print item
+        print "\n"
+        cnt = 1
+        answers = []
         data = raw_input("%d." % cnt).upper()
         if data == '':
             print "\n"
-            results(check(question,answers),question)
+            update = check(item,answers)
+            if update == 'correct':
+                correct = correct + 1
+                questions_correct.append(item)
+            if update == 'incorrect':
+                wrong = wrong + 1
+                questions_wrong.append(item)
+            results(check(item,answers),item) 
+        while data != '':
+            answers.append(data)
+            cnt = cnt + 1
+            data = raw_input("%d." % cnt).upper()
+            if data == '':
+                print "\n"
+                update = check(item,answers)
+                if update == 'correct':
+                    correct = correct + 1
+                    questions_correct.append(item)
+                if update == 'incorrect':
+                    wrong = wrong + 1
+                    questions_wrong.append(item)
+                results(check(item,answers),item)
+        count = count + 1
+        choice = raw_input("Press Enter to continue or enter a command... ")
+        if choice == '':
+            continue
+    
+    print questions_correct
+    print questions_wrong 
                 
 def check(question,answers):
     kwargs = {"alphagram":question, "search_type":"check"}
@@ -56,5 +87,4 @@ def question_stats(question):
     query2 = lookup.connect("SELECT * FROM words WHERE alphagram = '%s'" % question)
     print query1, query2
 
-question_stats('AEINRST')
 
