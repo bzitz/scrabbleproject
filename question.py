@@ -4,12 +4,14 @@ def quiz_main(question):
     count = 1
     correct = 0
     wrong = 0
+    total = 0
     questions_correct = []
     questions_wrong = []
     for item in question:
         os.system("clear")
         print "Questions %d of %d" % (count, len(question)) 
-        print "%d of %d Correct" % (correct, correct+wrong)
+        if total != 0:
+            print "%d of %d Correct %.2f percent" % (correct, correct+wrong, 100*float(correct)/float(total))
         print "\n"
         print item
         print "\n"
@@ -41,13 +43,22 @@ def quiz_main(question):
                     questions_wrong.append(item)
                 results(check(item,answers),item)
         count = count + 1
+        total = total +1
         choice = raw_input("Press Enter to continue or enter a command... ")
         if choice == '':
             continue
     
     print questions_correct
     print questions_wrong 
-                
+    requiz = raw_input("Would you like to requiz missed questions? ")
+    if requiz == 'y':
+        print "you chose y"
+        quiz_missed(questions_wrong)
+
+def quiz_missed(questions):
+    print "I ran"
+    quiz_main(questions)
+
 def check(question,answers):
     kwargs = {"alphagram":question, "search_type":"check"}
     correct_answers = lookup.build_list(**kwargs)
