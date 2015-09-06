@@ -1,4 +1,4 @@
-import lookup, leave_calc, calendar, time
+import lookup, leave_calc, calendar, time, os
 
 class Quiz(object):
     def __init__(self, questions):
@@ -12,8 +12,12 @@ class Quiz(object):
 
     def quiz_main(self):
         for item in self.questions:
+            os.system('clear')
             self.quiz_status()
             self.ask_question(item)
+            choice = raw_input("Press Enter to continue or enter a command... ")
+            if choice == '':
+                continue
 
     def ask_question(self, question):
         cnt = 1
@@ -32,7 +36,6 @@ class Quiz(object):
             data = raw_input("%d." % cnt).upper()
             if data == '':
                 print "\n"
-                print answers
                 print self.check(question, answers)
                 self.update(self.check(question,answers),question)
                 lookup.search_initiate(**{"search_type" : "annagram", "srch_trm": question})

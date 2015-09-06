@@ -1,4 +1,4 @@
-import os, lookup, sys, question
+import os, lookup, sys, question, quiz
 
 def choice_handler(choice):
     if choice == ":s":
@@ -51,11 +51,9 @@ def query(param):
     if data == "":
         query(param)
     elif data == ":quiz":
-        quiz(wrd_lst)
+        new_quiz = quiz.Quiz(wrd_lst)
+        new_quiz.quiz_main()
     else:
         choice_handler(data)
-
-def quiz(questions):
-    question.quiz_main(questions)
 
 main()
