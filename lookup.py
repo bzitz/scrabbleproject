@@ -52,6 +52,14 @@ def annagram_search(srch_trm):
     rows = connect("SELECT front_hooks,word,back_hooks,definition,lexicon_symbol,alphagram FROM words WHERE length = %d AND alphagram LIKE '%s'" % (len(srch_trm), frmt))
     words = make_table(rows)  
     return words
+
+def random_7():
+    words = []
+    rows = connect("SELECT question FROM study_list WHERE length = 7 AND last_asked = 0 ORDER BY RANDOM() LIMIT 50")
+    for item in rows:
+        question = xstr(item[0])
+        words.append(question)
+    return words
 def pattern_search(srch_trm):
     if '?' in srch_trm:
         data = srch_trm.replace('?','_').upper()

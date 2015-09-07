@@ -53,6 +53,10 @@ def query(param):
     elif data == ":quiz":
         new_quiz = quiz.Quiz(wrd_lst)
         new_quiz.quiz_main()
+        choice = raw_input("Would you like to quiz on the missed questions... ")
+        if choice == 'y':
+            missed_quiz = quiz.Quiz(new_quiz.questions_incorrect)
+            missed_quiz.quiz_main()
     else:
         choice_handler(data)
 
