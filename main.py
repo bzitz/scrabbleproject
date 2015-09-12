@@ -11,7 +11,10 @@ def choice_handler(choice):
         query("new")
     elif choice ==":judge":
         query("judge")
-
+    elif choice ==":r7":
+        start_quiz(lookup.random_7())
+    elif choice ==":l50":
+        start_quiz(lookup.last_50_missed())
     elif choice == ":quit":
         print "Goodbye"
         sys.exit
@@ -59,5 +62,15 @@ def query(param):
             missed_quiz.quiz_main()
     else:
         choice_handler(data)
+
+def start_quiz(word_list):
+    new_quiz = quiz.Quiz(word_list)
+    new_quiz.quiz_main()
+    choice = raw_input("Would you like to quiz on the missed questions... ")
+    if choice == 'y':
+        missed_quiz = quiz.Quiz(ran_quiz.questions_incorrect)
+        missed_quiz.quiz_main()
+    else:
+        main()
 
 main()

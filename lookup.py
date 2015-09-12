@@ -1,5 +1,5 @@
 import sqlite3 as lite
-import sys, csv
+import sys, csv, calendar, time
 from tabulate import tabulate
 from sys import argv
 
@@ -60,6 +60,16 @@ def random_7():
         question = xstr(item[0])
         words.append(question)
     return words
+
+def last_50_missed():
+    words = []
+    current_time = calendar.timegm(time.gmtime())
+    rows = connect("SELECT question FROM study_list WHERE streak = 0 AND last_asked > 1 ORDER BY last_asked LIMIT 50")
+    for item in rows:
+        question = xstr(item[0])
+        words.append(question)
+    return words
+
 def pattern_search(srch_trm):
     if '?' in srch_trm:
         data = srch_trm.replace('?','_').upper()
