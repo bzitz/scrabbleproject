@@ -68,7 +68,7 @@ def start_quiz(word_list):
     new_quiz.quiz_main()
     choice = raw_input("Would you like to quiz on the missed questions... ")
     if choice == 'y':
-        missed_quiz = quiz.Quiz(ran_quiz.questions_incorrect)
+        missed_quiz = quiz.Quiz(new__quiz.questions_incorrect)
         missed_quiz.quiz_main()
     else:
         main()
